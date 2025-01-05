@@ -2,6 +2,8 @@
 // console.log(Catme())
 
 const express =require('express');
+const userModel=require('./models/user')
+const dbConnection=require('./config/db')
 const app =express();
 
 app.set("view engine",'ejs')
@@ -39,9 +41,46 @@ app.get('/about',(req,res)=>{
 // })
 
 
-app.post('/get-form-data',(req,res)=>{
+app.post('/',async (req,res)=>{
     console.log(req.body)
+
+
+    const{username,email,password}=req.body
+
+    await userModel.create({
+        Username:username,
+        Email:email,
+        Password:password
+    })
+
     res.send('data received')
 })
 
+//Read
+
+
+// app.get('/get-users',(req,res)=>{
+//     userModel.find({}).then((data)=>{
+//         res.send(data)
+//     })
+// })
+
+ 
+
+app.get('/get-users',(req,res)=>{
+    // userModel.find({
+    //     Username:'Harshdeep'
+    userModel.findOne({
+        Username:'Harsh'
+    }).then((data)=>{
+        res.send(data)
+    })
+})
+
+app.get('/update-users',(req,res)=>{
+    userModel.findOneAndUpdate({
+        Username:'Harsh'
+    },{Email:'abcd@gmail.com'})
+    res.send("user updated")
+}) 
 app.listen(3000)
