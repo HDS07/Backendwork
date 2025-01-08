@@ -77,10 +77,18 @@ app.get('/get-users',(req,res)=>{
     })
 })
 
-app.get('/update-users',(req,res)=>{
-    userModel.findOneAndUpdate({
+app.get('/update-users',async(req,res)=>{
+    await userModel.findOneAndUpdate({
         Username:'Harsh'
     },{Email:'abcd@gmail.com'})
     res.send("user updated")
-}) 
+})
+
+
+app.get('/delete-users',async(req,res)=>{
+    await userModel.findOneAndDelete(
+        {Username:'Harsh'}
+    )
+    res.send("user deleted")
+})
 app.listen(3000)
